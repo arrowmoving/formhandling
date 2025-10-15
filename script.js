@@ -18,6 +18,7 @@ const translations = {
         formMovingFrom: "Moving From (Pick up address) *",
         formMovingTo: "Moving To (Drop-off address) *",
         formServiceType: "Service Type *",
+        formServiceSelect: "Select a service",
         formServiceResidential: "Residential Moving",
         formServiceLongDistance: "Long-Distance Moving",
         formServicePacking: "Packing Services",
@@ -67,6 +68,8 @@ const translations = {
         guide4Content: "Keep your pet in a quiet, secure room on moving day to reduce stress. Transport them in a comfortable carrier in your own vehicle. Once at the new home, set up a familiar space for them with their bed, toys, food, and water before letting them explore.",
         guide5Content: "A binding estimate guarantees the total cost based on the inventory. A non-binding estimate is a projection, and the final cost could change. Always get your quote in writing and understand what services are included (packing, materials, insurance, etc.).",
         footerContactTitle: "Contact Us",
+        footerPhone: "Phone",
+        footerGoogleMaps: "View on Google Maps",
         footerCopyright: "© 2025 Arrow Moving Van Lines. All Rights Reserved."
     },
     fr: {
@@ -82,6 +85,7 @@ const translations = {
         formMovingFrom: "Adresse de départ *",
         formMovingTo: "Adresse d'arrivée *",
         formServiceType: "Type de service *",
+        formServiceSelect: "Sélectionnez un service",
         formServiceResidential: "Déménagement Résidentiel",
         formServiceLongDistance: "Déménagement Longue Distance",
         formServicePacking: "Services d'Emballage",
@@ -130,6 +134,8 @@ const translations = {
         guide3Content: "Confirmez l'heure d'arrivée avec vos déménageurs. Protégez vos sols. Préparez une boîte 'première nuit'.",
         guide4Content: "Gardez votre animal dans une pièce calme le jour du déménagement. Transportez-le dans une cage confortable.",
         guide5Content: "Une estimation contractuelle garantit le coût total. Obtenez toujours votre devis par écrit.",
+        footerPhone: "Téléphone",
+        footerGoogleMaps: "Voir sur Google Maps",
         footerContactTitle: "Contactez-nous",
         footerCopyright: "© 2025 Arrow Moving Van Lines. Tous droits réservés."
     },
@@ -146,6 +152,7 @@ const translations = {
         formMovingFrom: "Dirección de recogida *",
         formMovingTo: "Dirección de entrega *",
         formServiceType: "Tipo de servicio *",
+        formServiceSelect: "Seleccione un servicio",
         formServiceResidential: "Mudanza Residencial",
         formServiceLongDistance: "Mudanza de Larga Distancia",
         formServicePacking: "Servicios de Empaque",
@@ -194,6 +201,8 @@ const translations = {
         guide3Content: "Confirme la hora de llegada con su empresa de mudanzas. Proteja sus pisos. Empaque una caja de 'primera noche'.",
         guide4Content: "Mantenga a su mascota en una habitación tranquila el día de la mudanza. Transpórtela en un transportín cómodo.",
         guide5Content: "Un presupuesto vinculante garantiza el costo total. Siempre obtenga su presupuesto por escrito.",
+        footerPhone: "Teléfono",
+        footerGoogleMaps: "Ver en Google Maps",
         footerContactTitle: "Contáctenos",
         footerCopyright: "© 2025 Arrow Moving Van Lines. Todos los derechos reservados."
     },
@@ -210,6 +219,7 @@ const translations = {
         formMovingFrom: "कहाँ से उठाना है (पता) *",
         formMovingTo: "कहाँ पहुँचाना है (पता) *",
         formServiceType: "सेवा का प्रकार *",
+        formServiceSelect: "एक सेवा चुनें",
         formServiceResidential: "आवासीय मूविंग",
         formServiceLongDistance: "लंबी दूरी की मूविंग",
         formServicePacking: "पैकिंग सेवाएं",
@@ -258,6 +268,8 @@ const translations = {
         guide3Content: "अपने मूवर्स के साथ आगमन के समय की पुष्टि करें। अपने फर्श को सुरक्षित रखें। एक 'पहली रात' का बॉक्स पैक करें।",
         guide4Content: "चलते-फिरते दिन अपने पालतू जानवर को एक शांत कमरे में रखें। उन्हें एक आरामदायक वाहक में ले जाएं।",
         guide5Content: "एक बाध्यकारी अनुमान कुल लागत की गारंटी देता है। हमेशा अपना उद्धरण लिखित में प्राप्त करें।",
+        footerPhone: "फ़ोन",
+        footerGoogleMaps: "Google Maps पर देखें",
         footerContactTitle: "संपर्क करें",
         footerCopyright: "© 2025 एरो मूविंग वैन लाइन्स। सर्वाधिकार सुरक्षित।"
     }
@@ -343,11 +355,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // "Other" service type logic
-        const serviceTypeRadios = document.querySelectorAll('input[name="Service Type"]');
+        const serviceSelect = document.getElementById('service');
         const otherServiceInput = document.getElementById('otherService');
-        serviceTypeRadios.forEach(radio => {
-            radio.addEventListener('change', () => {
-                if (radio.value === 'Other' && radio.checked) {
+
+        if (serviceSelect) {
+            serviceSelect.addEventListener('change', () => {
+                if (serviceSelect.value === 'Other') {
                     otherServiceInput.style.display = 'block';
                     otherServiceInput.setAttribute('required', '');
                 } else {
@@ -356,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     otherServiceInput.value = ''; // Clear value when hidden
                 }
             });
-        });
+        }
 
         // Form Submission
         estimateForm.addEventListener('submit', e => {
