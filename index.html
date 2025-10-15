@@ -22,6 +22,22 @@
       gtag('js', new Date());
       gtag('config', 'G-XXXXXXXXXX');
     </script>
+        <title>Locator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="locatorplus.css" rel="stylesheet">
+    <script>
+      const CONFIGURATION = {
+        "locations": [
+          {"title":"Arrow Moving Van Lines Ltd.","address1":"143 Finch Avenue West","address2":"Toronto, ON, Canada","coords":{"lat":43.7768208,"lng":-79.4277482},"placeId":"ChIJeUrGjPktK4gRIqzaGq9yrfM"}
+        ],
+        "mapOptions": {"center":{"lat":38.0,"lng":-100.0},"fullscreenControl":true,"mapTypeControl":false,"streetViewControl":false,"zoom":4,"zoomControl":true,"maxZoom":17,"mapId":""},
+        "mapsApiKey": "YOUR_API_KEY_HERE",
+        "capabilities": {"input":false,"autocomplete":false,"directions":false,"distanceMatrix":false,"details":false,"actions":false}
+      };
+
+    </script>
+    <script src="locatorplus.js" type="module"></script>
 </head>
 <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXX"
@@ -140,12 +156,41 @@
             </div>
         </section>
 
-        <div class="video-section">
-            <video controls autoplay muted loop playsinline class="full-width-video">
-                <source src="assets/clip1.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
+            <div class="video-section">
+                <div class="video-carousel-container">
+                    <div class="video-carousel">
+                        <button class="carousel-btn carousel-btn-prev" aria-label="Previous video">‹</button>
+                        <button class="carousel-btn carousel-btn-next" aria-label="Next video">›</button>
+                        
+                        <div class="video-track">
+                            <div class="video-slide">
+                                <video controls autoplay muted loop playsinline>
+                                    <source src="assets/clip1.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <div class="video-slide">
+                                <video controls muted loop playsinline>
+                                    <source src="assets/clip2.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <div class="video-slide">
+                                <video controls muted loop playsinline>
+                                    <source src="assets/clip3.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-dots">
+                        <span class="dot active" data-slide="0"></span>
+                        <span class="dot" data-slide="1"></span>
+                        <span class="dot" data-slide="2"></span>
+                    </div>
+                </div>
+            </div>
 
         <section class="services" id="services">
             <div class="container">
@@ -335,5 +380,12 @@
     </a>
 
     <script src="script.js"></script>
+        <script type="module" src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.11/index.min.js"></script>
+
+    <!-- Uses components from the Extended Component Library; see
+         https://github.com/googlemaps/extended-component-library for more information
+         on these HTML tags and how to configure them. -->
+    <gmpx-api-loader key="YOUR_API_KEY_HERE" solution-channel="GMP_QB_locatorplus_v11_c"></gmpx-api-loader>
+    <gmpx-store-locator map-id="DEMO_MAP_ID"></gmpx-store-locator>
 </body>
 </html>
