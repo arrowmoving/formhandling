@@ -513,17 +513,24 @@ if (videoCarousel) {
     let startX = 0;
     let currentX = 0;
     let isDragging = false;
+    let isAnimating = false;
     
     // Function to update carousel position
-    const updateCarousel = (index) => {
+    const updateCarousel = (index, immediate = false) => {
+        if (isAnimating && !immediate) return;
+        
         // Ensure index is within bounds
         if (index < 0) {
-            currentIndex = 0;
+            index = 0;
         } else if (index >= slides.length) {
-            currentIndex = slides.length - 1;
-        } else {
-            currentIndex = index;
+            index = slides.length - 1;
         }
+        
+        // Don't update if already on this slide
+        if (index === currentIndex && !immediate) return;
+        
+        isAnimating = true;
+        currentIndex = index;
         
         const offset = -currentIndex * 100;
         track.style.transform = `translateX(${offset}%)`;
@@ -539,16 +546,23 @@ if (videoCarousel) {
                 video.pause();
             }
         });
+        
+        // Reset animation lock after transition
+        setTimeout(() => {
+            isAnimating = false;
+        }, 500);
     };
     
     // Previous button
     prevBtn.addEventListener('click', () => {
+        if (isAnimating) return;
         const newIndex = Math.max(0, currentIndex - 1);
         updateCarousel(newIndex);
     });
     
     // Next button
     nextBtn.addEventListener('click', () => {
+        if (isAnimating) return;
         const newIndex = Math.min(slides.length - 1, currentIndex + 1);
         updateCarousel(newIndex);
     });
@@ -556,28 +570,47 @@ if (videoCarousel) {
     // Dots navigation
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
+            if (isAnimating) return;
             updateCarousel(index);
         });
     });
     
     // Touch/Mouse swipe functionality
     const handleStart = (e) => {
+        if (isAnimating) return;
         isDragging = true;
         startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+        currentX = startX;
         track.style.transition = 'none';
     };
     
     const handleMove = (e) => {
-        if (!isDragging) return;
-        e.preventDefault();
+        if (!isDragging || isAnimating) return;
+        
         currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
         const diff = currentX - startX;
-        const offset = -currentIndex * 100 + (diff / track.offsetWidth) * 100;
-        track.style.transform = `translateX(${offset}%)`;
+        const maxOffset = (slides.length - 1) * 100;
+        
+        // Calculate new offset with bounds
+        let baseOffset = -currentIndex * 100;
+        let dragOffset = (diff / track.offsetWidth) * 100;
+        let newOffset = baseOffset + dragOffset;
+        
+        // Prevent dragging beyond first/last slide
+        if (newOffset > 0) {
+            newOffset = 0;
+            dragOffset = -baseOffset;
+        } else if (newOffset < -maxOffset) {
+            newOffset = -maxOffset;
+            dragOffset = -maxOffset - baseOffset;
+        }
+        
+        track.style.transform = `translateX(${newOffset}%)`;
     };
     
     const handleEnd = () => {
         if (!isDragging) return;
+        
         isDragging = false;
         track.style.transition = 'transform 0.5s ease-in-out';
         
@@ -587,23 +620,17 @@ if (videoCarousel) {
         let newIndex = currentIndex;
         
         if (Math.abs(diff) > threshold) {
-            if (diff > 0) {
+            if (diff > 0 && currentIndex > 0) {
                 // Swipe right - go to previous
                 newIndex = currentIndex - 1;
-            } else {
+            } else if (diff < 0 && currentIndex < slides.length - 1) {
                 // Swipe left - go to next
                 newIndex = currentIndex + 1;
             }
         }
         
-        // Ensure newIndex stays within bounds
-        if (newIndex < 0) {
-            newIndex = 0;
-        } else if (newIndex >= slides.length) {
-            newIndex = slides.length - 1;
-        }
-        
-        updateCarousel(newIndex);
+        // Update to new index or snap back to current
+        updateCarousel(newIndex, true);
         
         startX = 0;
         currentX = 0;
@@ -611,27 +638,32 @@ if (videoCarousel) {
     
     // Mouse events
     track.addEventListener('mousedown', handleStart);
-    track.addEventListener('mousemove', handleMove);
-    track.addEventListener('mouseup', handleEnd);
-    track.addEventListener('mouseleave', handleEnd);
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('mouseup', handleEnd);
     
     // Touch events
-    track.addEventListener('touchstart', handleStart, { passive: false });
-    track.addEventListener('touchmove', handleMove, { passive: false });
+    track.addEventListener('touchstart', handleStart, { passive: true });
+    track.addEventListener('touchmove', handleMove, { passive: true });
     track.addEventListener('touchend', handleEnd);
+    track.addEventListener('touchcancel', handleEnd);
     
     // Prevent video controls from triggering swipe
     videos.forEach(video => {
         video.addEventListener('mousedown', (e) => e.stopPropagation());
-        video.addEventListener('touchstart', (e) => e.stopPropagation());
+        video.addEventListener('touchstart', (e) => e.stopPropagation(), { passive: true });
     });
     
+    // Initialize carousel position
+    updateCarousel(0, true);
+    
     // Optional: Auto-play carousel (uncomment if desired)
-    /*
+
     setInterval(() => {
-        const newIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
-        updateCarousel(newIndex);
-    }, 5000); // Change slide every 5 seconds
-    */
+        if (!isDragging && !isAnimating) {
+            const newIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
+            updateCarousel(newIndex);
+        }
+    }, 28000); // Change slide every 28 seconds
+
 }
 });
