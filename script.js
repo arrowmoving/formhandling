@@ -495,3 +495,143 @@ document.addEventListener('DOMContentLoaded', () => {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').setAttribute('min', today);
 });
+document.addEventListener('DOMContentLoaded', async () => {
+  await customElements.whenDefined('gmpx-store-locator');
+  const locator = document.querySelector('gmpx-store-locator');
+  locator.configureFromQuickBuilder(CONFIGURATION);
+// --- VIDEO CAROUSEL FUNCTIONALITY ---
+const videoCarousel = document.querySelector('.video-carousel');
+if (videoCarousel) {
+    const track = videoCarousel.querySelector('.video-track');
+    const slides = Array.from(track.querySelectorAll('.video-slide'));
+    const videos = Array.from(track.querySelectorAll('video'));
+    const prevBtn = videoCarousel.querySelector('.carousel-btn-prev');
+    const nextBtn = videoCarousel.querySelector('.carousel-btn-next');
+    const dots = Array.from(document.querySelectorAll('.carousel-dots .dot'));
+    
+    let currentIndex = 0;
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+    
+    // Function to update carousel position
+    const updateCarousel = (index) => {
+        // Ensure index is within bounds
+        if (index < 0) {
+            currentIndex = 0;
+        } else if (index >= slides.length) {
+            currentIndex = slides.length - 1;
+        } else {
+            currentIndex = index;
+        }
+        
+        const offset = -currentIndex * 100;
+        track.style.transform = `translateX(${offset}%)`;
+        
+        // Update dots
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentIndex);
+        });
+        
+        // Pause all videos except current
+        videos.forEach((video, i) => {
+            if (i !== currentIndex) {
+                video.pause();
+            }
+        });
+    };
+    
+    // Previous button
+    prevBtn.addEventListener('click', () => {
+        const newIndex = Math.max(0, currentIndex - 1);
+        updateCarousel(newIndex);
+    });
+    
+    // Next button
+    nextBtn.addEventListener('click', () => {
+        const newIndex = Math.min(slides.length - 1, currentIndex + 1);
+        updateCarousel(newIndex);
+    });
+    
+    // Dots navigation
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            updateCarousel(index);
+        });
+    });
+    
+    // Touch/Mouse swipe functionality
+    const handleStart = (e) => {
+        isDragging = true;
+        startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+        track.style.transition = 'none';
+    };
+    
+    const handleMove = (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+        const diff = currentX - startX;
+        const offset = -currentIndex * 100 + (diff / track.offsetWidth) * 100;
+        track.style.transform = `translateX(${offset}%)`;
+    };
+    
+    const handleEnd = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        track.style.transition = 'transform 0.5s ease-in-out';
+        
+        const diff = currentX - startX;
+        const threshold = track.offsetWidth / 4; // 25% swipe threshold
+        
+        let newIndex = currentIndex;
+        
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                // Swipe right - go to previous
+                newIndex = currentIndex - 1;
+            } else {
+                // Swipe left - go to next
+                newIndex = currentIndex + 1;
+            }
+        }
+        
+        // Ensure newIndex stays within bounds
+        if (newIndex < 0) {
+            newIndex = 0;
+        } else if (newIndex >= slides.length) {
+            newIndex = slides.length - 1;
+        }
+        
+        updateCarousel(newIndex);
+        
+        startX = 0;
+        currentX = 0;
+    };
+    
+    // Mouse events
+    track.addEventListener('mousedown', handleStart);
+    track.addEventListener('mousemove', handleMove);
+    track.addEventListener('mouseup', handleEnd);
+    track.addEventListener('mouseleave', handleEnd);
+    
+    // Touch events
+    track.addEventListener('touchstart', handleStart, { passive: false });
+    track.addEventListener('touchmove', handleMove, { passive: false });
+    track.addEventListener('touchend', handleEnd);
+    
+    // Prevent video controls from triggering swipe
+    videos.forEach(video => {
+        video.addEventListener('mousedown', (e) => e.stopPropagation());
+        video.addEventListener('touchstart', (e) => e.stopPropagation());
+    });
+    
+    // Optional: Auto-play carousel (uncomment if desired)
+    /*
+    setInterval(() => {
+        const newIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
+        updateCarousel(newIndex);
+    }, 5000); // Change slide every 5 seconds
+    */
+}
+});
