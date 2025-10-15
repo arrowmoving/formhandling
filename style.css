@@ -716,10 +716,12 @@ fieldset {
 /* Radio Button Group */
 .radio-group label {
     display: flex;
-    align-items: center;
+    align-items:center;
+    justify-content: flex-start;
     margin-bottom: 8px;
     font-weight: normal;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .radio-group input[type="radio"] {
