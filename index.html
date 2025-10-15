@@ -90,15 +90,16 @@
                                     <input type="text" id="destination" name="Moving To" placeholder="e.g., Markham, ON" required>
                                 </div>
                                 <div class="form-group">
-                                    <label data-lang-key="formServiceType">Service Type *</label>
-                                    <div class="radio-group">
-                                        <label><input type="radio" name="Service Type" value="Residential Moving" required> <span data-lang-key="formServiceResidential">Residential Moving</span></label>
-                                        <label><input type="radio" name="Service Type" value="Long-Distance Moving"> <span data-lang-key="formServiceLongDistance">Long-Distance Moving</span></label>
-                                        <label><input type="radio" name="Service Type" value="Packing Services"> <span data-lang-key="formServicePacking">Packing Services</span></label>
-                                        <label><input type="radio" name="Service Type" value="Commercial/Office Moving"> <span data-lang-key="formServiceCommercial">Commercial/Office Moving</span></label>
-                                        <label><input type="radio" name="Service Type" value="Specialty Item Moving"> <span data-lang-key="formServiceSpecialty">Specialty Item Moving</span></label>
-                                        <label><input type="radio" name="Service Type" value="Other"> <span data-lang-key="formServiceOther">Other</span></label>
-                                    </div>
+                                    <label for="service" data-lang-key="formServiceType">Service Type *</label>
+                                    <select id="service" name="Service Type" required>
+                                        <option value="" disabled selected data-lang-key="formServiceSelect">Select a service</option>
+                                        <option value="Residential Moving" data-lang-key="formServiceResidential">Residential Moving</option>
+                                        <option value="Long-Distance Moving" data-lang-key="formServiceLongDistance">Long-Distance Moving</option>
+                                        <option value="Packing Services" data-lang-key="formServicePacking">Packing Services</option>
+                                        <option value="Commercial/Office Moving" data-lang-key="formServiceCommercial">Commercial/Office Moving</option>
+                                        <option value="Specialty Item Moving" data-lang-key="formServiceSpecialty">Specialty Item Moving</option>
+                                        <option value="Other" data-lang-key="formServiceOther">Other</option>
+                                    </select>
                                     <input type="text" id="otherService" name="Other Service" class="other-service-input" placeholder="Please specify">
                                 </div>
                             </fieldset>
@@ -273,12 +274,12 @@
                         143 Finch Ave W<br>
                         Toronto ON M2N2J1
                     </p>
-                    <p>
-                        <a href="tel:+16479236838">Phone: (647) 923-6838</a>
-                    </p>
-                     <p>
-                        <a href="https://maps.google.com/?q=143+Finch+Ave+W+Toronto+ON+M2N2J1" target="_blank">View on Google Maps</a>
-                    </p>
+                <p>
+                    <span data-lang-key="footerPhone">Phone</span>: <a href="tel:+16479236838">(647) 923-6838</a>
+                </p>
+                <p>
+                    <a href="https://maps.google.com/?q=143+Finch+Ave+W+Toronto+ON+M2N2J1" target="_blank" data-lang-key="footerGoogleMaps">View on Google Maps</a>
+                </p>
                 </div>
                 <div class="footer-section">
                     <h4>Links</h4>
