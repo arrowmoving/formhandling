@@ -8,6 +8,8 @@ const translations = {
     en: {
         navHome: "Home",
         navServices: "Services",
+        navReviews: "Reviews",
+        navFaq: "FAQ",
         navGuides: "Moving Guides",
         navContact: "Contact",
         navCallNow: "Call Now",
@@ -56,6 +58,8 @@ const translations = {
         faq3A: "Our standard quotes include the moving truck, professional movers, equipment (dollies, blankets, straps), and basic liability insurance. Packing materials, specialty item handling, and additional insurance are available for an extra charge. We provide a detailed breakdown with every quote.",
         faq4Q: "How do you protect furniture and fragile items?",
         faq4A: "Our trained movers use high-quality moving blankets, plastic wrap, and specialized packing techniques to protect all your furniture. Fragile items like glassware and electronics are carefully packed in sturdy boxes with appropriate cushioning materials.",
+        reviewsTitle: "What Our Customers Say",
+        reviewsCta: "Leave Us a Review",
         guidesTitle: "Helpful Moving Guides",
         guide1Title: "Ultimate Packing Guide",
         guide2Title: "Choosing a Mover",
@@ -75,6 +79,8 @@ const translations = {
     fr: {
         navHome: "Accueil",
         navServices: "Services",
+        navReviews: "Avis",
+        navFaq: "FAQ",
         navGuides: "Guides de Déménagement",
         navContact: "Contact",
         navCallNow: "Appelez maintenant",
@@ -114,6 +120,8 @@ const translations = {
         service5Title: "Déménagement d'Articles Spéciaux",
         service5Desc: "Transport sûr et sécurisé pour vos articles de valeur et délicats, y compris les pianos, l'art et les antiquités.",
         detailsBtn: "Voir les détails",
+        reviewsTitle: "Ce Que Disent Nos Clients",
+        reviewsCta: "Laissez-nous un Avis",
         faqTitle: "Foire Aux Questions",
         faq1Q: "Combien de temps à l'avance dois-je réserver mon déménagement ?",
         faq1A: "Nous recommandons de réserver votre déménagement au moins 4 à 6 semaines à l'avance, surtout pendant la haute saison (mai-septembre) ou à la fin du mois.",
@@ -142,6 +150,8 @@ const translations = {
     es: {
         navHome: "Inicio",
         navServices: "Servicios",
+        navReviews: "Reseñas",
+        navFaq: "Preguntas",
         navGuides: "Guías de Mudanza",
         navContact: "Contacto",
         navCallNow: "Llama ahora",
@@ -180,6 +190,8 @@ const translations = {
         service4Desc: "Servicios de reubicación de oficinas y comerciales eficientes y profesionales con una interrupción mínima.",
         service5Title: "Mudanza de Artículos Especiales",
         service5Desc: "Transporte seguro para sus artículos valiosos y delicados, incluyendo pianos, arte y antigüedades.",
+        reviewsTitle: "Lo Que Dicen Nuestros Clientes",
+        reviewsCta: "Déjanos una Reseña",
         detailsBtn: "Ver detalles",
         faqTitle: "Preguntas Frecuentes",
         faq1Q: "¿Con cuánta antelación debo reservar mi mudanza?",
@@ -209,6 +221,8 @@ const translations = {
     hi: {
         navHome: "होम",
         navServices: "सेवाएं",
+        navReviews: "समीक्षाएं",
+        navFaq: "सामान्य प्रश्न",
         navGuides: "मूविंग गाइड",
         navContact: "संपर्क करें",
         navCallNow: "अभी कॉल करें",
@@ -257,6 +271,8 @@ const translations = {
         faq3A: "हमारे मानक कोट में मूविंग ट्रक, पेशेवर मूवर्स, उपकरण, और बुनियादी देयता बीमा शामिल हैं।",
         faq4Q: "आप फर्नीचर और नाजुक वस्तुओं की सुरक्षा कैसे करते हैं?",
         faq4A: "हमारे प्रशिक्षित मूवर्स आपके सभी फर्नीचर की सुरक्षा के लिए उच्च-गुणवत्ता वाले मूविंग कंबल, प्लास्टिक रैप का उपयोग करते हैं।",
+        reviewsTitle: "हमारे ग्राहक क्या कहते हैं",
+        reviewsCta: "हमें एक समीक्षा दें",
         guidesTitle: "उपयोगी मूविंग गाइड",
         guide1Title: "अंतिम पैकिंग गाइड",
         guide2Title: "एक मूवर कैसे चुनें",
@@ -500,6 +516,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const locator = document.querySelector('gmpx-store-locator');
   locator.configureFromQuickBuilder(CONFIGURATION);
 // --- VIDEO CAROUSEL FUNCTIONALITY ---
+// --- VIDEO CAROUSEL FUNCTIONALITY WITH ERROR HANDLING ---
 const videoCarousel = document.querySelector('.video-carousel');
 if (videoCarousel) {
     const track = videoCarousel.querySelector('.video-track');
@@ -514,6 +531,31 @@ if (videoCarousel) {
     let currentX = 0;
     let isDragging = false;
     let isAnimating = false;
+    
+    // Handle video loading errors
+    videos.forEach((video, index) => {
+        video.addEventListener('error', (e) => {
+            console.error(`Error loading video ${index + 1}:`, e);
+            const slide = video.closest('.video-slide');
+            if (slide && !slide.querySelector('.video-error')) {
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'video-error';
+                errorMsg.innerHTML = `
+                    <p>⚠️ Video temporarily unavailable</p>
+                    <small>Please try refreshing the page</small>
+                `;
+                slide.appendChild(errorMsg);
+            }
+        });
+        
+        // Try to load the video
+        video.addEventListener('loadedmetadata', () => {
+            console.log(`Video ${index + 1} loaded successfully`);
+        });
+        
+        // Force load when slide becomes active
+        video.load();
+    });
     
     // Function to update carousel position
     const updateCarousel = (index, immediate = false) => {
@@ -540,9 +582,16 @@ if (videoCarousel) {
             dot.classList.toggle('active', i === currentIndex);
         });
         
-        // Pause all videos except current
+        // Handle video playback
         videos.forEach((video, i) => {
-            if (i !== currentIndex) {
+            if (i === currentIndex) {
+                // Try to load and prepare current video
+                video.load();
+                // Attempt to play if muted and user has interacted
+                if (video.muted) {
+                    video.play().catch(e => console.log('Autoplay prevented:', e));
+                }
+            } else {
                 video.pause();
             }
         });
@@ -615,21 +664,18 @@ if (videoCarousel) {
         track.style.transition = 'transform 0.5s ease-in-out';
         
         const diff = currentX - startX;
-        const threshold = track.offsetWidth / 4; // 25% swipe threshold
+        const threshold = track.offsetWidth / 4;
         
         let newIndex = currentIndex;
         
         if (Math.abs(diff) > threshold) {
             if (diff > 0 && currentIndex > 0) {
-                // Swipe right - go to previous
                 newIndex = currentIndex - 1;
             } else if (diff < 0 && currentIndex < slides.length - 1) {
-                // Swipe left - go to next
                 newIndex = currentIndex + 1;
             }
         }
         
-        // Update to new index or snap back to current
         updateCarousel(newIndex, true);
         
         startX = 0;
@@ -655,6 +701,7 @@ if (videoCarousel) {
     
     // Initialize carousel position
     updateCarousel(0, true);
+
     
     // Optional: Auto-play carousel (uncomment if desired)
 
