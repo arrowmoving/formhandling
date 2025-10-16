@@ -51,6 +51,7 @@
             <div class="nav-links">
                 <a href="#home" data-lang-key="navHome">Home</a>
                 <a href="#services" data-lang-key="navServices">Services</a>
+                <a href="#reviews" data-lang-key="navReviews">Reviews</a>
                 <a href="#faq" data-lang-key="navFaq">FAQ</a>
                 <a href="#guides" data-lang-key="navGuides">Moving Guides</a>
                 <a href="#contact" data-lang-key="navContact">Contact</a>
@@ -73,6 +74,7 @@
         <div class="mobile-nav" id="mobileNav">
             <a href="#home" onclick="toggleMobileMenu()" data-lang-key="navHome">Home</a>
             <a href="#services" onclick="toggleMobileMenu()" data-lang-key="navServices">Services</a>
+            <a href="#reviews" onclick="toggleMobileMenu()" data-lang-key="navReviews">Reviews</a>
             <a href="#faq" onclick="toggleMobileMenu()" data-lang-key="navFaq">FAQ</a>
             <a href="#guides" onclick="toggleMobileMenu()" data-lang-key="navGuides">Moving Guides</a>
             <a href="#contact" onclick="toggleMobileMenu()" data-lang-key="navContact">Contact</a>
@@ -164,20 +166,23 @@
                         
                         <div class="video-track">
                             <div class="video-slide">
-                                <video controls autoplay muted loop playsinline>
+                                <video controls muted loop playsinline preload="metadata">
                                     <source src="assets/clip1.mp4" type="video/mp4">
+                                    <source src="assets/clip1.webm" type="video/webm">
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
                             <div class="video-slide">
-                                <video controls muted loop playsinline>
+                                <video controls muted loop playsinline preload="metadata">
                                     <source src="assets/clip2.mp4" type="video/mp4">
+                                    <source src="assets/clip2.webm" type="video/webm">
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
                             <div class="video-slide">
-                                <video controls muted loop playsinline>
+                                <video controls muted loop playsinline preload="metadata">
                                     <source src="assets/clip3.mp4" type="video/mp4">
+                                    <source src="assets/clip3.webm" type="video/webm">
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
@@ -240,6 +245,104 @@
             </div>
         </section>
 
+        <section class="reviews" id="reviews">
+            <div class="container">
+                <h2 class="section-title" data-lang-key="reviewsTitle">What Our Customers Say</h2>
+                <div class="reviews-rating-summary">
+                    <div class="rating-badge">
+                        <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google" class="google-logo">
+                        <div class="rating-stars">★★★★★</div>
+                        <p class="rating-text">4.7 out of 5</p>
+                        <p class="review-count">Based on <span id="reviewCount">74</span> reviews</p>
+                    </div>
+                </div>
+                
+                <!-- Reviews Container - Easy to replace with API data -->
+                <div class="reviews-grid" id="reviewsContainer">
+                    <!-- Review 1 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">H</div>
+                                <div>
+                                    <div class="reviewer-name">Hasan Kılıçkaya</div>
+                                    <div class="review-date">a month ago</div>
+                                </div>
+                            </div>
+                            <div class="stars">★★★★★</div>
+                        </div>
+                        <p class="review-text">I recently moved and used Arrow Moving Van Lines Ltd. for my delivery needs — I couldn't be happier with the service! The team was professional, punctual, and handled everything with care. On top of that, the pricing was very reasonable, which made a stressful time so much easier. I'm truly impressed and grateful for their help. Highly recommended!</p>
+                    </div>
+
+                    <!-- Review 2 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">H</div>
+                                <div>
+                                    <div class="reviewer-name">Hakan Uner</div>
+                                    <div class="review-date">a month ago</div>
+                                </div>
+                            </div>
+                            <div class="stars">★★★★★</div>
+                        </div>
+                        <p class="review-text">I had a great experience with Arrow Moving Van Lines. Mr. Muhittin was especially outstanding – very professional, skilled, and attentive throughout the whole process. His positive attitude and efficiency made what could have been a stressful moving day so much easier. The team handled everything with care and respect, and I truly appreciated how smooth the entire service was from start to finish. I am very satisfied and would definitely recommend Mr. Muhittin and Arrow Moving Van Lines to anyone looking for a reliable moving company.</p>
+                    </div>
+
+                    <!-- Review 3 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">A</div>
+                                <div>
+                                    <div class="reviewer-name">Anonymous</div>
+                                    <div class="review-meta">Local Guide · 18 reviews</div>
+                                    <div class="review-date">3 months ago</div>
+                                </div>
+                            </div>
+                            <div class="stars">★★★★★</div>
+                        </div>
+                        <p class="review-text">I am really happy with my move, thanks to Muhittin & the other gentlemen. They were very friendly, fast, and efficient, which made my move feel easy (despite it being a naturally stressful time). The pricing was fair and the quality of service was great. They arrived on time, handled everything carefully, and were a pleasure to work with overall. I would definitely use them again / recommend them to my friends.</p>
+                    </div>
+
+                    <!-- Review 4 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">V</div>
+                                <div>
+                                    <div class="reviewer-name">Vera Berisavljevic</div>
+                                    <div class="review-meta">Local Guide · 25 reviews</div>
+                                    <div class="review-date">5 months ago</div>
+                                </div>
+                            </div>
+                            <div class="stars">★★★★★</div>
+                        </div>
+                        <p class="review-text">Great movers at a great price! My family and I were relocating for work and I contacted Arrow for a quote. They were responsive, very easy to work with, and came out for a home visit to see exactly how many items we had and their size. Their quote was very reasonable and we confirmed a time for the move. On the day of the move, despite the horrible dumping of snow we received in Toronto (February), the three movers were punctual. The move in total took about three hours and they even provided us with some moving materials (blankets, furniture wraps) and helped my husband securely wrap a few pieces that were too big for the two of us to manage. I cannot recommend their services enough for your next move!</p>
+                    </div>
+
+                    <!-- Review 5 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">S</div>
+                                <div>
+                                    <div class="reviewer-name">Semin Ozmorali</div>
+                                    <div class="review-meta">Local Guide · 54 reviews</div>
+                                    <div class="review-date">a year ago</div>
+                                </div>
+                            </div>
+                            <div class="stars">★★★★★</div>
+                        </div>
+                        <p class="review-text">Our experience with Arrow Moving from Toronto to Oakville was outstanding! Their team was exceptionally diligent and careful with every piece of furniture, demonstrating great attention to detail at every step. They worked tirelessly at an amazing tempo, making the moving process smooth, fast and efficient. Additionally, they were incredibly kind and respectful throughout. We highly recommend Arrow Moving to anyone in need of reliable and professional movers!</p>
+                    </div>
+                </div>
+
+                <div class="reviews-cta">
+                    <a href="https://g.page/r/CSKs2hqvcq3zEBM/review" target="_blank" class="cta-button" data-lang-key="reviewsCta">Leave Us a Review</a>
+                </div>
+            </div>
+        </section>
         <section class="faq" id="faq">
             <div class="container">
                 <h2 class="section-title" data-lang-key="faqTitle">Frequently Asked Questions</h2>
@@ -329,6 +432,7 @@
                 <div class="footer-section">
                     <h4>Links</h4>
                     <p><a href="#services" data-lang-key="navServices">Services</a></p>
+                    <p><a href="#reviews" data-lang-key="navReviews">Reviews</a></p>
                     <p><a href="#faq" data-lang-key="navFaq">FAQ</a></p>
                     <p><a href="#guides" data-lang-key="navGuides">Moving Guides</a></p>
                 </div>
