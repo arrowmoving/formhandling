@@ -42,18 +42,22 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
+    padding: 0.75rem 0 0.5rem 0; /* Less padding on bottom, more on top */
 }
 
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--primary);
+    display: flex;    align-items: center;
+    gap: 10px;
+    text-decoration: none;  
 }
 
 .logo img {
-    height: 40px;
+    height: 50px;
     width: auto;
+    display: block;
 }
 
 .nav-links {
@@ -434,6 +438,9 @@ footer {
 
 /* Responsive Design */
 @media (min-width: 768px) {
+    nav {
+        padding: 1rem 0; /* Balanced padding on larger screens */
+    }
     .mobile-menu {
         display: none;
     }
